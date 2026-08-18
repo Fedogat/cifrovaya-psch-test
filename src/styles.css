@@ -1,0 +1,78 @@
+:root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #18324a; background: #edf2f6; font-synthesis: none; }
+* { box-sizing: border-box; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: radial-gradient(circle at 10% 0%, #fff 0, transparent 30%), #edf2f6; }
+button,input { font: inherit; }
+button { cursor: pointer; }
+.eyebrow { color: #e96705; font-size: 11px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.brand-mark { display: grid; width: 58px; height: 58px; place-items: center; border-radius: 17px; background: linear-gradient(145deg, #f47c20, #d85500); color: #fff; box-shadow: 0 12px 28px rgb(224 91 0 / 25%); font-size: 23px; font-weight: 950; }
+.brand-mark.small { width: 44px; height: 44px; border-radius: 13px; font-size: 18px; }
+.primary { border: 0; border-radius: 11px; background: #e76506; color: #fff; font-weight: 850; padding: 11px 16px; box-shadow: 0 7px 18px rgb(231 101 6 / 18%); }
+.primary:disabled { cursor: wait; opacity: .65; }
+.message { max-width: 1180px; margin: 0 auto; padding: 12px 14px; border-radius: 11px; }
+.message.error { border: 1px solid #f3b0b5; background: #fff0f1; color: #9e2f38; }
+.login-shell { display: grid; min-height: 100vh; place-items: center; padding: 20px; }
+.login-card { display: grid; width: min(430px, 100%); gap: 13px; padding: 34px; border: 1px solid #dfe7ee; border-radius: 23px; background: rgb(255 255 255 / 94%); box-shadow: 0 24px 70px rgb(23 58 87 / 12%); }
+.login-card h1 { margin: 0; font-size: 31px; }
+.login-card p { margin: 0 0 5px; color: #65788b; line-height: 1.5; }
+.login-card form { display: grid; gap: 13px; }
+.login-card label { display: grid; gap: 6px; color: #586c80; font-size: 12px; font-weight: 850; }
+.login-card input { width: 100%; padding: 12px; border: 1px solid #d7e1ea; border-radius: 10px; color: #17334c; }
+.login-card a { color: #315c7e; font-size: 13px; font-weight: 750; text-decoration: none; }
+.dashboard-shell,.exam-shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 22px 0 48px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 22px; }
+.topbar > div { display: flex; align-items: center; gap: 11px; }
+.topbar > div > div { display: grid; gap: 4px; }
+.topbar > button,.welcome a,.result-card button { padding: 9px 12px; border: 1px solid #d5e0e9; border-radius: 10px; background: #fff; color: #365873; font-weight: 800; text-decoration: none; }
+.welcome { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 23px; border-radius: 18px; background: linear-gradient(110deg, #173c5a, #245c7b); color: #fff; box-shadow: 0 14px 36px rgb(23 60 90 / 16%); }
+.welcome h1 { margin: 0 0 5px; font-size: 27px; }
+.welcome p { margin: 0; color: #c9dce8; }
+.welcome a { border-color: rgb(255 255 255 / 24%); background: rgb(255 255 255 / 10%); color: #fff; }
+.section-heading { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin: 25px 0 12px; }
+.section-heading h2 { margin: 0 0 4px; }
+.section-heading p { margin: 0; color: #6e8193; }
+.section-heading > b { display: grid; min-width: 38px; height: 38px; place-items: center; border-radius: 12px; background: #fff; }
+.assignment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.assignment-card { display: grid; gap: 13px; padding: 17px; border: 1px solid #dfe7ee; border-radius: 16px; background: #fff; box-shadow: 0 7px 22px rgb(25 55 78 / 5%); }
+.assignment-card > header { display: flex; justify-content: space-between; gap: 10px; }
+.assignment-card > header span { color: #d85d00; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+.assignment-card > header small { color: #326c95; font-weight: 800; }
+.assignment-card h3 { margin: 0; font-size: 19px; }
+.assignment-card p { min-height: 42px; margin: 0; color: #6f8192; line-height: 1.45; }
+.assignment-card dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 0; }
+.assignment-card dl div { display: grid; gap: 3px; padding: 9px; border-radius: 9px; background: #f4f7fa; }
+.assignment-card dt { color: #718396; font-size: 10px; }
+.assignment-card dd { margin: 0; font-weight: 850; }
+.assignment-card footer { display: flex; justify-content: space-between; align-items: end; gap: 10px; padding-top: 11px; border-top: 1px solid #e8edf2; }
+.assignment-card footer div { display: grid; gap: 2px; }
+.assignment-card footer small { color: #718396; font-size: 11px; }
+.empty { grid-column: 1 / -1; display: grid; justify-items: center; padding: 44px 20px; border: 1px dashed #cbd7e1; border-radius: 16px; background: rgb(255 255 255 / 60%); text-align: center; }
+.empty span { font-size: 34px; }
+.empty h2,.empty p { margin: 5px 0 0; }
+.empty p { color: #718396; }
+.history-list { display: grid; gap: 9px; }
+.history-list article { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 20px; padding: 14px 16px; border: 1px solid #dfe7ee; border-radius: 13px; background: #fff; }
+.history-list article div { display: grid; gap: 4px; }
+.history-list small,.history-empty { color: #718396; }
+.history-list span { padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 900; }
+.history-list span.passed { background: #e8f8ee; color: #247346; }
+.history-list span.failed { background: #fdecec; color: #b3313a; }
+.result-card { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 15px; margin-top: 16px; padding: 16px; border: 1px solid #9bd6b1; border-radius: 15px; background: #effbf3; }
+.result-card.failed { border-color: #f2bec2; background: #fff4f5; }
+.result-card > span { font-size: 30px; }
+.result-card h2,.result-card p { margin: 3px 0 0; }
+.result-card p { color: #5d7487; }
+.exam-header { position: sticky; z-index: 5; top: 0; display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-bottom: 16px; padding: 15px 18px; border: 1px solid #dfe7ee; border-radius: 15px; background: rgb(255 255 255 / 94%); backdrop-filter: blur(10px); }
+.exam-header h1 { margin: 3px 0 0; font-size: 24px; }
+.timer { display: grid; min-width: 96px; justify-items: center; padding: 9px 13px; border-radius: 11px; background: #eef5fb; color: #26587c; }
+.timer b { font-size: 21px; font-variant-numeric: tabular-nums; }
+.timer.warning { background: #fff0e6; color: #bd5000; }
+.exam-form { display: grid; gap: 14px; }
+.exam-form fieldset { display: grid; gap: 9px; margin: 0; padding: 17px; border: 1px solid #dfe7ee; border-radius: 15px; background: #fff; }
+.exam-form legend { display: flex; align-items: center; gap: 10px; padding: 0 5px; font-size: 17px; font-weight: 850; line-height: 1.4; }
+.exam-form legend span { display: grid; min-width: 31px; height: 31px; place-items: center; border-radius: 9px; background: #edf4fa; color: #2d6387; }
+.exam-form fieldset > label { display: flex; align-items: start; gap: 10px; padding: 12px; border: 1px solid #e2e8ef; border-radius: 11px; background: #fafcfd; cursor: pointer; }
+.exam-form fieldset > label.selected { border-color: #ef8b43; background: #fff5ed; }
+.exam-form input { margin-top: 3px; accent-color: #e76506; }
+.exam-form footer { position: sticky; bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 13px 15px; border: 1px solid #dce5ec; border-radius: 13px; background: rgb(255 255 255 / 94%); box-shadow: 0 10px 30px rgb(25 55 78 / 12%); backdrop-filter: blur(10px); }
+@media (max-width: 920px) { .assignment-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 650px) { .dashboard-shell,.exam-shell { width: min(100% - 22px, 1180px); padding-top: 12px; } .welcome,.exam-header { align-items: stretch; flex-direction: column; } .welcome a { text-align: center; } .assignment-grid { grid-template-columns: 1fr; } .history-list article,.result-card { grid-template-columns: 1fr; } .history-list span { justify-self: start; } .exam-header { position: static; } .timer { justify-self: stretch; } .exam-form legend { align-items: start; font-size: 15px; } .exam-form footer { flex-direction: column; align-items: stretch; } .exam-form footer button { width: 100%; } .login-card { padding: 25px; } }
