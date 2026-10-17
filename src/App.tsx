@@ -1,8 +1,9 @@
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { callTestingApi } from "./api";
 import { supabase } from "./supabase";
+import QuarterlyTestResult,{type QuarterlyResult} from "./QuarterlyTestResult";
 
-type AttemptSummary = {
+type AttemptSummary = QuarterlyResult & {
   id: string;
   started_at: string;
   submitted_at: string | null;
@@ -21,7 +22,9 @@ type Assignment = {
   status: "assigned" | "in_progress" | "completed";
   best_percent: number | null;
   best_grade: number | null;
+  best_attempt_id?:string;best_average_grade?:number|null;
   test: {
+    assessment_kind?:"lesson"|"quarterly";
     title: string;
     description: string | null;
     passing_percent: number;
@@ -57,7 +60,7 @@ type Attempt = {
   }>;
 };
 
-type Result = {
+type Result = QuarterlyResult & {
   attempt_id: string;
   score: number;
   total: number;
@@ -231,14 +234,15 @@ export default function App() {
       <header className="topbar"><div><div className="brand-mark small">92</div><div><span className="eyebrow">Цифровая ПСЧ · 3.2.1</span><b>Тестирование личного состава</b></div></div><button type="button" onClick={logout}>Выйти</button></header>
       <section className="welcome"><div><h1>{dashboard?.profile.full_name || "Сотрудник"}</h1><p>{dashboard?.profile.requested_position} · {dashboard?.profile.fire_station}</p></div><a href="https://cifrovaya-psch.vercel.app">Основное приложение ↗</a></section>
       {error ? <div className="message error">{error}</div> : null}
-      {result ? <section className={`result-card ${result.passed ? "passed" : "failed"}`}><span>{result.passed ? "✅" : "⚠️"}</span><div><small>Результат сохранён в «Боевой подготовке»</small><h2>{result.percent}% · оценка {result.grade}</h2><p>{result.score} правильных ответов из {result.total}.{result.can_retry ? " Доступна повторная попытка." : ""}{result.expired ? " Время попытки истекло." : ""}</p></div><button type="button" onClick={() => setResult(null)}>Закрыть</button></section> : null}
+      {result ? <section className={`result-card ${result.passed ? "passed" : "failed"}`}><span>{result.passed ? "✅" : "⚠️"}</span><div><small>Результат сохранён в «Боевой подготовке»</small><h2>{result.percent}% · оценка {result.grade}</h2><p>{result.score} правильных ответов из {result.total}.{result.can_retry ? " Доступна повторная попытка." : ""}{result.expired ? " Время попытки истекло." : ""}</p>{result.average_grade!=null?<p>Оценки по предметам автоматически переносятся в квартальную ведомость. Если она ещё не создана — при её создании.</p>:null}<QuarterlyTestResult result={result}/></div><button type="button" onClick={() => setResult(null)}>Закрыть</button></section> : null}
       <section className="section-heading"><div><h2>Нужно пройти</h2><p>Откройте тест до указанного срока. Незавершённая попытка продолжится с прежним таймером.</p></div><b>{active.length}</b></section>
       <div className="assignment-grid">
-        {active.map((assignment) => <article className="assignment-card" key={assignment.id}><header><span>{assignment.test.subject?.short_name || "Тест"}</span><small>{assignment.status === "in_progress" ? "Попытка начата" : "Назначен"}</small></header><h3>{assignment.test.title}</h3><p>{assignment.test.description || assignment.session.topic}</p><dl><div><dt>Вопросов</dt><dd>{assignment.test.question_count}</dd></div><div><dt>Время</dt><dd>{assignment.test.time_limit_minutes} мин</dd></div><div><dt>Проходной</dt><dd>{assignment.test.passing_percent}%</dd></div></dl><footer><div><small>Срок</small><b>{formatDate(assignment.due_at)}</b><small>Попытки: {assignment.attempts_used}/{assignment.attempt_limit}</small></div><button className="primary" disabled={loading} onClick={() => void startAttempt(assignment)}>{assignment.status === "in_progress" ? "Продолжить" : "Начать"}</button></footer></article>)}
+        {active.map((assignment) => <article className="assignment-card" key={assignment.id}><header><span>{assignment.test.subject?.short_name || "Тест"}</span><small>{assignment.status === "in_progress" ? "Попытка начата" : "Назначен"}</small></header><h3>{assignment.test.title}</h3><p>{assignment.test.description || assignment.session.topic}</p><dl><div><dt>Вопросов</dt><dd>{assignment.test.question_count}</dd></div><div><dt>Время</dt><dd>{assignment.test.time_limit_minutes} мин</dd></div><div><dt>{assignment.test.assessment_kind==="quarterly"?"По каждой теме":"Проходной"}</dt><dd>{assignment.test.assessment_kind==="quarterly"?"5 случайных вопросов":`${assignment.test.passing_percent}%`}</dd></div></dl><footer><div><small>Срок</small><b>{formatDate(assignment.due_at)}</b><small>Попытки: {assignment.attempts_used}/{assignment.attempt_limit}</small></div><button className="primary" disabled={loading} onClick={() => void startAttempt(assignment)}>{assignment.status === "in_progress" ? "Продолжить" : "Начать"}</button></footer></article>)}
         {!active.length ? <section className="empty"><span>🎉</span><h2>Обязательных тестов нет</h2><p>Все назначения выполнены.</p></section> : null}
       </div>
       <section className="section-heading completed-heading"><div><h2>Завершённые</h2><p>Лучшие результаты по пройденным тестам.</p></div></section>
-      <div className="history-list">{completed.map((assignment) => <article key={assignment.id}><div><b>{assignment.test.title}</b><small>{assignment.test.subject?.name} · {assignment.session.topic}</small></div><div><b>{assignment.best_percent}%</b><small>Оценка {assignment.best_grade || "—"}</small></div><span className={(assignment.best_percent || 0) >= assignment.test.passing_percent ? "passed" : "failed"}>{(assignment.best_percent || 0) >= assignment.test.passing_percent ? "Пройден" : "Не пройден"}</span></article>)}{!completed.length ? <p className="history-empty">Завершённых тестов пока нет.</p> : null}</div>
+      <div className="history-list">{completed.map((assignment) => <article key={assignment.id}><div><b>{assignment.test.title}</b><small>{assignment.test.subject?.name} · {assignment.session.topic}</small></div><div><b>{assignment.best_percent}%</b><small>{assignment.best_average_grade!=null?`Средняя ${Number(assignment.best_average_grade).toLocaleString("ru-RU")}`:`Оценка ${assignment.best_grade||"—"}`}</small></div><span className={(assignment.test.assessment_kind==="quarterly"?(assignment.best_grade||2)>=3:(assignment.best_percent||0)>=assignment.test.passing_percent) ? "passed" : "failed"}>{(assignment.test.assessment_kind==="quarterly"?(assignment.best_grade||2)>=3:(assignment.best_percent||0)>=assignment.test.passing_percent) ? "Пройден" : "Не пройден"}</span>{assignment.test.assessment_kind==="quarterly"?<QuarterlyTestResult result={assignment.attempts.find(a=>a.id===assignment.best_attempt_id)||{}}/>:null}</article>)}{!completed.length ? <p className="history-empty">Завершённых тестов пока нет.</p> : null}</div>
     </main>
   );
 }
+
